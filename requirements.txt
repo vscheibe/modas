@@ -1,0 +1,5 @@
+###### Requirements without Version Specifiers ######
+mesa
+numpy
+pandas
+pytest

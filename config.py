@@ -1,0 +1,8 @@
+""" Config for the flocking simulation """
+MAXIMUM_STEPS = 5000
+GRID_WIDTH = 40
+GRID_HEIGHT = 40
+SEED = 0
+STARTING_AGENTS = 400
+GRID_TOROIDAL = False
+# TODO
