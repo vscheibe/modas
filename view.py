@@ -2,31 +2,36 @@
 from agent import BirdAgent
 from predator import PredatorAgent
 
+
 def agent_portrayal(agent):
     """ Define agent portrayal """
-    h_x, h_y = agent.get_direction_unit_vector()
+    direction = agent.get_direction_unit_vector()
+    print(direction)
     color_predator = "red"
     color_bird = "green"
 
+    portrayal = {
+        "scale": 0.75,
+        "Layer": 0,
+    }
     if isinstance(agent, BirdAgent):
-        portrayal = {
-            "Shape": "arrowHead",
-            "Color": color_bird,
-            "Filled": "true",
-            "Layer": 0,
-            "scale": 0.5,
-            "heading_x": h_x,
-            "heading_y": h_y
-        }
+        if direction == (0, 1):
+            portrayal["Shape"] = "ArrowheadNORTH.png"
+        elif direction == (1, 1):
+            portrayal["Shape"] = "ArrowheadNORTHEAST.png"
+        elif direction == (1, 0):
+            portrayal["Shape"] = "ArrowheadEAST.png"
+        elif direction == (1, -1):
+            portrayal["Shape"] = "ArrowheadSOUTHEAST.png"
+        elif direction == (0, -1):
+            portrayal["Shape"] = "ArrowheadSOUTH.png"
+        elif direction == (-1, -1):
+            portrayal["Shape"] = "ArrowheadSOUTHWEST.png"
+        elif direction == (-1, 0):
+            portrayal["Shape"] = "ArrowheadWEST.png"
+        elif direction == (-1, 1):
+            portrayal["Shape"] = "ArrowheadNORTHWEST.png"
     elif isinstance(agent, PredatorAgent):
-        portrayal = {
-            "Shape": "arrowHead",
-            "Color": color_predator,
-            "Filled": "true",
-            "Layer": 0,
-            "scale": 0.5,
-            "heading_x": h_x,
-            "heading_y": h_y
-        }
+        portrayal["Shape"] = "circle"
 
     return portrayal

@@ -14,16 +14,23 @@ class BirdAgent(Agent):
     class Compass(Enum):
         """ Compass enum used for directional logic """
         NORTH = auto()
-        WEST = auto()
-        SOUTH = auto()
+        NORTHEAST = auto()
         EAST = auto()
-        # TODO
+        SOUTHEAST = auto()
+        SOUTH = auto()
+        SOUTHWEST = auto()
+        WEST = auto()
+        NORTHWEST = auto()
 
     def __init__(self, unique_id, model):
         """ Once max_age is reached, agent automatically dies """
         super().__init__(unique_id, model)
         self.direction = model.random.choice(list(self.Compass))
+        self.velocity = model.random.randint(1, 2)
         # TODO
+
+    def get_direction(self):
+        return self.direction
 
     def step(self):
         """ Executes one step of an agent """
@@ -33,7 +40,7 @@ class BirdAgent(Agent):
         """ Action: Turn to face a direction """
         # TODO
 
-    def move_forward(self):
+    def move(self):
         """ Action: Move 1 cell in current direction """
         # TODO
 
@@ -47,13 +54,26 @@ class BirdAgent(Agent):
         y_pos_add = 0
         match self.direction:
             case self.Compass.NORTH:
-                x_pos_add = -1
-            case self.Compass.SOUTH:
-                x_pos_add = 1
-            case self.Compass.WEST:
-                y_pos_add = -1
-            case self.Compass.EAST:
                 y_pos_add = 1
+            case self.Compass.SOUTH:
+                y_pos_add = -1
+            case self.Compass.WEST:
+                x_pos_add = -1
+            case self.Compass.EAST:
+                x_pos_add = 1
+            case self.Compass.NORTHEAST:
+                x_pos_add = 1
+                y_pos_add = 1
+            case self.Compass.NORTHWEST:
+                x_pos_add = -1
+                y_pos_add = 1
+            case self.Compass.SOUTHEAST:
+                x_pos_add = 1
+                y_pos_add = -1
+            case self.Compass.SOUTHWEST:
+                x_pos_add = -1
+                y_pos_add = -1
+
         return x_pos_add, y_pos_add
 
     def get_id(self):

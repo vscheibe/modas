@@ -13,13 +13,13 @@ from view import agent_portrayal  # TODO
 
 def visualized_single_run():
     """ Run the webserver and canvas view """
-    grid = CanvasGrid(agent_portrayal, config.GRID_WIDTH, config.GRID_HEIGHT, config.GRID_WIDTH * 10,
-                      config.GRID_HEIGHT * 10)
+    grid = CanvasGrid(agent_portrayal, config.GRID_WIDTH, config.GRID_HEIGHT, config.GRID_WIDTH * config.VIEW_SCALING,
+                      config.GRID_HEIGHT * config.VIEW_SCALING)
 
     server = ModularServer(FlockingModel,
                            [grid],
                            "Flocking Model",
-                           {"number_agents": config.STARTING_AGENTS,
+                           {"number_agents": config.AMOUNT_BIRDS,
                             "width": config.GRID_WIDTH,
                             "height": config.GRID_HEIGHT,
                             "toroidal": config.GRID_TOROIDAL,

@@ -33,7 +33,7 @@ class FlockingModel(Model):
         self.num_agents = 0
         self.has_predator = False
 
-        """Places Agents randomly"""  # TODO
+        # Places Agents randomly  # TODO Place as Flock together
         coordinates = self.random.sample(
             list(product(range(0, width), range(0, height))), k=number_agents)
         for i in range(number_agents):
@@ -45,8 +45,8 @@ class FlockingModel(Model):
         """ Executes one step of the model """
         self.schedule.step()
         self.cycle += 1
-        #self.add_predator TODO
-        #self.terminate() TODO
+        # self.add_predator TODO
+        # self.terminate() TODO
         sys.stdout.write(" %d <-- %d \r" % (config.MAXIMUM_STEPS, self.cycle))
         sys.stdout.flush()
 
