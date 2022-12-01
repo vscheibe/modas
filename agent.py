@@ -33,23 +33,47 @@ class BirdAgent(Agent):
         return self.direction
 
     def step(self):
+        self.move()
         """ Executes one step of an agent """
         # TODO
 
     def turn(self):
-        """ Action: Turn to face a direction """
+        """ Turn to face a direction """
         # TODO
 
     def move(self):
-        """ Action: Move 1 cell in current direction """
+        """ Move 1 cell in current direction """
+        neighbors = self.model.grid.get_neighborhood(self.pos, True, False, 1)
+        free_cells = []
+        for neighbor in neighbors:
+            x_pos, y_pos = neighbor
+            if self.model.grid[x_pos, y_pos] is None:
+                free_cells.append(neighbor)
+
+        x_pos, y_pos = self.pos
+        x_pos_add, y_pos_add = self.get_direction_unit_vector()
+        move_to = (x_pos + x_pos_add, y_pos + y_pos_add)
+        if move_to in free_cells:
+            self.model.grid.move_agent(self, move_to)
+        # TODO
+    def movement(self):
+        """Handles movement action once per step"""
         # TODO
 
+    def random_movement(self):
+        """Moves birds in one direction"""
+    def alignment_movement(self):
+        """birds align"""
+    def cohesion_movement(self):
+        """birds align and have cohesion"""
+    def avoiding_dispersion_movement(self):
+        """birds avoid dispersion and collision*"""
+    def fleeing_from_predator(self):
+        """Final movement type"""
     def get_direction_unit_vector(self):
         """ Movement helper method
             Calculates the movement vector of an agent
         """
-        # TODO Add 4 more vectors
-
         x_pos_add = 0
         y_pos_add = 0
         match self.direction:
