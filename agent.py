@@ -25,8 +25,10 @@ class BirdAgent(Agent):
     def __init__(self, unique_id, model):
         """ Once max_age is reached, agent automatically dies """
         super().__init__(unique_id, model)
-        self.direction = model.random.choice(list(self.Compass))
-        self.velocity = model.random.randint(1, 2)
+
+        self.dir_x = model.random.randint(-2, 2)
+        self.dir_y = model.random.randint(-2, 2)
+        self.direction = (self.dir_x, self.dir_y)
         # TODO
 
     def get_direction(self):
@@ -37,12 +39,25 @@ class BirdAgent(Agent):
         """ Executes one step of an agent """
         # TODO
 
+    def move(self):
+        neighbors = self.model.grid.get_neighborhood(self.pos, True, False, 2)
+        free_cells = []
+        for neighbor in neighbors:
+            x_pos, y_pos = neighbor
+            if self.model.grid[x_pos, y_pos] is None:
+                free_cells.append(neighbor)
+        x_pos, y_pos = self.pos
+        move_to = (x_pos + self.dir_x, y_pos + self.dir_y)
+        if move_to in free_cells:
+            self.model.grid.move_agent(self, move_to)
+
     def turn(self):
         """ Turn to face a direction """
         # TODO
 
+    """
     def move(self):
-        """ Move 1 cell in current direction """
+        # Move 1 cell in current direction 
         neighbors = self.model.grid.get_neighborhood(self.pos, True, False, 1)
         free_cells = []
         for neighbor in neighbors:
@@ -56,6 +71,7 @@ class BirdAgent(Agent):
         if move_to in free_cells:
             self.model.grid.move_agent(self, move_to)
         # TODO
+    """
     def movement(self):
         """Handles movement action once per step"""
         # TODO
