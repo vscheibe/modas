@@ -26,8 +26,8 @@ class BirdAgent(Agent):
         """ Once max_age is reached, agent automatically dies """
         super().__init__(unique_id, model)
 
-        self.dir_x = model.random.randint(-2, 2)
-        self.dir_y = model.random.randint(-2, 2)
+        self.dir_x = model.random.randint(-config.MAX_VELOCITY_BIRD, config.MAX_VELOCITY_BIRD)
+        self.dir_y = model.random.randint(-config.MAX_VELOCITY_BIRD, config.MAX_VELOCITY_BIRD)
         self.direction = (self.dir_x, self.dir_y)
         # TODO
 

@@ -12,6 +12,11 @@ import config
 import predator
 
 
+def get_center_of_grid():
+    x_pos, y_pos = int((config.GRID_HEIGHT - 1) / 2), int((config.GRID_HEIGHT - 1) / 2)
+    return x_pos, y_pos
+
+
 class FlockingModel(Model):
 
     def __init__(self,
@@ -34,11 +39,11 @@ class FlockingModel(Model):
         self.has_predator = False
 
         # Places Agents randomly  # TODO Place as Flock together
-        coordinates = self.random.sample(
-            list(product(range(0, width), range(0, height))), k=number_agents)
+        first_cells = self.get_starting_cells()
+        start_cells = self.random.sample(first_cells, k=number_agents)
         for i in range(number_agents):
             new_agent = agent.BirdAgent(self.next_id(), self)
-            x_pos, y_pos = coordinates[i]
+            x_pos, y_pos = start_cells[i]
             self.add_agent(new_agent, x_pos, y_pos)
 
     def step(self):
@@ -91,3 +96,17 @@ class FlockingModel(Model):
     def get_grid(self):
         """ Returns the mesa.SingleGrid held by EvolModel """
         return self.grid
+
+    def get_starting_cells(self):
+        birds = config.AMOUNT_BIRDS
+        cells_in_neighborhood = 0
+        i = 0
+        while cells_in_neighborhood < birds:
+            i = i + 1
+            cells_in_neighborhood = ((2 * i) + 1) * ((2 * i) + 1)
+        center = get_center_of_grid()
+        print(center)
+        print(i)
+        neighbors = self.grid.get_neighborhood(center, True, True, i)
+
+        return neighbors
