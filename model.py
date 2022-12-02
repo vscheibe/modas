@@ -105,8 +105,6 @@ class FlockingModel(Model):
             i = i + 1
             cells_in_neighborhood = ((2 * i) + 1) * ((2 * i) + 1)
         center = get_center_of_grid()
-        print(center)
-        print(i)
         neighbors = self.grid.get_neighborhood(center, True, True, i)
 
         return neighbors
