@@ -34,7 +34,7 @@ class BirdAgent(Agent):
         self.calculate_isolation()
         self.avoid_dispersion_movement()
         self.move()
-
+        #self.move_alternative()
     def move(self):
         """Moves the agent once along its heading vector if a cell is free"""
         neighbors = self.model.grid.get_neighborhood(self.pos, True, False, 2)
@@ -47,6 +47,12 @@ class BirdAgent(Agent):
         move_to = (x_pos + self.dir_x, y_pos + self.dir_y)
         if move_to in free_cells:
             self.model.grid.move_agent(self, move_to)
+
+
+    def move_alternative(self):
+        x_pos, y_pos = self.pos
+        move_to = (x_pos + self.dir_x, y_pos + self.dir_y)
+        self.model.grid.move_agent(self, move_to)
 
     def avoid_dispersion_movement(self):
         """birds avoid dispersion and collisions"""
