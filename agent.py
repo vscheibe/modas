@@ -23,22 +23,23 @@ class BirdAgent(Agent):
         self.dir_x, self.dir_y = init_position(model)
         self.direction = (self.dir_x, self.dir_y)
         while self.direction == (0, 0):
-            print("reinitializing position")
+            print("reinitializing direction")
             self.dir_x, self.dir_y = init_position(model)
             self.direction = (self.dir_x, self.dir_y)
+        self.is_isolated = False
 
 
     def get_direction(self):
         return self.direction
 
-
-
     def step(self):
         self.move()
+        self.calculate_isolation()
         """ Executes one step of an agent """
         # TODO
 
     def move(self):
+        """Moves the agent once along its heading vector if a cell is free"""
         neighbors = self.model.grid.get_neighborhood(self.pos, True, False, 2)
         free_cells = []
         for neighbor in neighbors:
@@ -50,13 +51,10 @@ class BirdAgent(Agent):
         if move_to in free_cells:
             self.model.grid.move_agent(self, move_to)
 
-    def random_movement(self):
-        """Moves birds in one direction"""
-    def alignment_movement(self):
+    def alig_coh_movement(self):
         """birds align"""
-    def cohesion_movement(self):
-        """birds align and have cohesion"""
-    def avoiding_dispersion_movement(self):
+
+    def avoid_dispersion_movement(self):
         """birds avoid dispersion and collision*"""
     def fleeing_from_predator(self):
         """Final movement type"""
@@ -64,3 +62,17 @@ class BirdAgent(Agent):
     def get_id(self):
         """ Get unique ID of the agent """
         return self.unique_id
+
+    def calculate_isolation(self):
+        arr = []
+        for bird in self.model.schedule.agents:
+            if bird != self:
+                my_pos_x, my_pos_y = self.pos
+                bird_x, bird_y = bird.pos
+                distance = abs(my_pos_x-bird_x)+abs(my_pos_y-bird_y)
+                if distance < config.ISOLATION_DISTANCE:
+                    arr.append(distance)
+        if len(arr) == 0:
+            self.is_isolated = True
+        else:
+            self.is_isolated = False
