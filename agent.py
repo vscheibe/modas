@@ -1,8 +1,5 @@
 """ Agent module for the Flocking simulation """
 import random
-from copy import copy
-from enum import Enum, auto
-import math
 
 from mesa import Agent
 
@@ -92,6 +89,7 @@ class BirdAgent(Agent):
 
         self.dir_x = int((self.dir_x + new_dir_x) / 2)
         self.dir_y = int((self.dir_y + new_dir_y) / 2)
+        self.direction = (self.dir_x, self.dir_y)
 
     def fleeing_from_predator(self):
         """Final movement type"""
