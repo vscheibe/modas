@@ -6,7 +6,7 @@ from predator import PredatorAgent
 def agent_portrayal(agent):
     """ Define agent portrayal """
     direction = agent.get_direction()
-    print(direction)
+    #print(direction)
     color_predator = "red"
     color_bird = "green"
 

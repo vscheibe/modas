@@ -8,18 +8,30 @@ from mesa import Agent
 import predator
 import config
 
+
+def init_position(model):
+    dir_x = model.random.randint(-config.MAX_VELOCITY_BIRD, config.MAX_VELOCITY_BIRD)
+    dir_y = model.random.randint(-config.MAX_VELOCITY_BIRD, config.MAX_VELOCITY_BIRD)
+    return dir_x, dir_y
+
+
 class BirdAgent(Agent):
     """ Class modeling agent with flocking capabilities """
 
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
-        self.dir_x = model.random.randint(-config.MAX_VELOCITY_BIRD, config.MAX_VELOCITY_BIRD)
-        self.dir_y = model.random.randint(-config.MAX_VELOCITY_BIRD, config.MAX_VELOCITY_BIRD)
+        self.dir_x, self.dir_y = init_position(model)
         self.direction = (self.dir_x, self.dir_y)
-        # TODO
+        while self.direction == (0, 0):
+            print("reinitializing position")
+            self.dir_x, self.dir_y = init_position(model)
+            self.direction = (self.dir_x, self.dir_y)
+
 
     def get_direction(self):
         return self.direction
+
+
 
     def step(self):
         self.move()
