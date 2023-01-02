@@ -46,17 +46,30 @@ class FlockingModel(Model):
             x_pos, y_pos = start_cells[i]
             self.add_agent(new_agent, x_pos, y_pos)
 
+        self.add_predator()
+
+    def calculate_lower_left_corner(self):
+        cells = self.get_starting_cells()
+        distance = config.SPAWN_DISTANCE_FROM_SWARM
+        pos_x = cells[0][0]
+        pos_y = cells[0][1]
+        return pos_x - distance, pos_y - distance
+
+    def calculate_cohesion(self):
+        pass
+
     def step(self):
         """ Executes one step of the model """
         self.schedule.step()
         self.cycle += 1
-        # self.add_predator TODO
         # self.terminate() TODO
-        sys.stdout.write(" %d <-- %d \r" % (config.MAXIMUM_STEPS, self.cycle))
-        sys.stdout.flush()
+        # sys.stdout.write(" %d <-- %d \r" % (config.MAXIMUM_STEPS, self.cycle))
+        # sys.stdout.flush()
 
     def terminate(self):
         """ Stops the simulation if the model has reached termination conditions """
+        if self.cycle == config.MAXIMUM_STEPS:
+            self.running = False
         # TODO
 
     def add_agent(self, new_agent, x_pos, y_pos):
@@ -78,7 +91,9 @@ class FlockingModel(Model):
             self.num_agents -= 1
 
     def add_predator(self):
-        return None
+        new_predator = predator.PredatorAgent(self.next_id(), self)
+        low_x, low_y = self.calculate_lower_left_corner()
+        self.add_agent(new_predator, low_x, low_y)
 
     def find_empty_cell(self, grid):
         """ Returns (x,y) of a random, empty cell, or (-1,-1) if none was found """

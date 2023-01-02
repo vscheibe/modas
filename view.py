@@ -5,12 +5,14 @@ from predator import PredatorAgent
 
 def agent_portrayal(agent):
     """ Define agent portrayal """
-    direction = agent.get_direction()
     portrayal = {
         "scale": 0.75,
         "Layer": 0,
     }
+
     if isinstance(agent, BirdAgent):
+
+        direction = agent.get_direction()
         if direction == (0, 1) or direction == (0, 2):
             portrayal["Shape"] = "img/ArrowheadNORTH.png"
         elif direction == (1, 1) or direction == (1, 2) or direction == (2, 2) or direction == (2, 1):
@@ -31,5 +33,10 @@ def agent_portrayal(agent):
 
     elif isinstance(agent, PredatorAgent):
         portrayal["Shape"] = "circle"
+        portrayal["Color"] = "red"
+        portrayal["Filled"] = "true"
+        portrayal["r"] = 0.75
 
     return portrayal
+
+
