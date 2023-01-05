@@ -1,0 +1,51 @@
+@startuml
+'https://plantuml.com/class-diagram
+class Mesa
+
+class Agent
+class Model
+class Visualization
+class DataCollector
+
+class FlockingModel{
+collect_data()
+step()
+calculate_cohesion()
+terminate()
+}
+class BirdAgent{
+step()
+move()
+fleeing_from_predator()
+calculate_isolation()
+}
+class PredatorAgent{
+step()
+move()
+
+}
+class agent_portrayal
+
+class config
+
+Mesa <|-- Agent
+Mesa <|-- Model
+Mesa <|-- Visualization
+Mesa <|-- DataCollector
+
+Model <|-- FlockingModel
+Agent <|-- BirdAgent
+Agent <|-- PredatorAgent
+Visualization <|-- agent_portrayal
+
+BirdAgent .. config
+PredatorAgent .. config
+FlockingModel .. config
+
+FlockingModel "1..*" *-- BirdAgent
+FlockingModel "0..1" *-- PredatorAgent
+FlockingModel "1" *-- DataCollector
+
+
+
+@enduml
