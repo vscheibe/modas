@@ -84,7 +84,6 @@ class FlockingModel(Model):
         """ Stops the simulation if the model has reached termination conditions """
         if self.cycle == config.MAXIMUM_STEPS:
             self.running = False
-        # TODO
 
     def add_agent(self, new_agent, x_pos, y_pos):
         """ Add an agent to the schedule and to the board"""
