@@ -26,7 +26,7 @@ class FlockingModel(Model):
                  height: int,
                  toroidal: bool,
                  seed=None):
-        """ Constructor for EvolModel
+        """ Constructor for Flocking Model
             seed=None means seed is chosen from system time
         """
         super().__init__(seed=seed)
