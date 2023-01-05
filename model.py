@@ -1,6 +1,7 @@
 import sys
 import math
-from itertools import product
+import itertools
+import numpy
 
 from mesa import Model
 from mesa.datacollection import DataCollector
@@ -37,16 +38,16 @@ class FlockingModel(Model):
         self.cycle = 0
         self.num_agents = 0
         self.has_predator = False
-
-        # Places Agents randomly  # TODO Place as Flock together
+        self.datacollector = DataCollector(model_reporters={"Cohesion": "cohesion"})
+        # Places Birds in the center as a flock
         first_cells = self.get_starting_cells()
         start_cells = self.random.sample(first_cells, k=number_agents)
         for i in range(number_agents):
             new_agent = agent.BirdAgent(self.next_id(), self)
             x_pos, y_pos = start_cells[i]
             self.add_agent(new_agent, x_pos, y_pos)
-
         self.add_predator()
+        self.cohesion = self.calculate_cohesion()
 
     def calculate_lower_left_corner(self):
         cells = self.get_starting_cells()
@@ -56,15 +57,28 @@ class FlockingModel(Model):
         return pos_x - distance, pos_y - distance
 
     def calculate_cohesion(self):
-        pass
+        distance_array = []
+        bird_array = []
+        for bird in self.schedule.agents:
+            if bird != self and not isinstance(bird, predator.PredatorAgent):
+                bird_array.append(bird)
+        for a, b in itertools.combinations(bird_array, 2):
+            a_x, a_y = a.pos
+            b_x, b_y = b.pos
+            distance = abs(a_x - b_x) + abs(a_y - b_y)
+            distance_array.append(distance)
+        mean_distance = numpy.mean(distance_array)
+        return mean_distance
 
     def step(self):
         """ Executes one step of the model """
+        self.datacollector.collect(self)
         self.schedule.step()
+        self.cohesion = self.calculate_cohesion()
         self.cycle += 1
-        # self.terminate() TODO
-        # sys.stdout.write(" %d <-- %d \r" % (config.MAXIMUM_STEPS, self.cycle))
-        # sys.stdout.flush()
+        self.terminate()
+        sys.stdout.write(" %d <-- %d \r" % (config.MAXIMUM_STEPS, self.cycle))
+        sys.stdout.flush()
 
     def terminate(self):
         """ Stops the simulation if the model has reached termination conditions """
