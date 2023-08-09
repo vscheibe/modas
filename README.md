@@ -1,6 +1,11 @@
 # MODAS
 Investigating bird flocking behavior in an agent-based simulation using the Python Mesa Framework.
 
+
+[![DOI](https://zenodo.org/badge/674607038.svg)](https://zenodo.org/badge/latestdoi/674607038)
+
+
+
 ## Installation
 
 Usage of python 3.10 is recommended
